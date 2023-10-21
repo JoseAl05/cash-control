@@ -27,7 +27,7 @@ export default async function Home({
 
   const user = await currentUser();
 
-  if (searchParams.month && !searchParams.year) {
+  if (searchParams?.month && !searchParams?.year) {
     const parsedMonth = parseInt(searchParams.month);
     const year = new Date().getFullYear();
     const initialDate = new Date(year, parsedMonth - 1, 1);
@@ -48,7 +48,7 @@ export default async function Home({
     };
   }
 
-  if (searchParams.year && !searchParams.month) {
+  if (searchParams?.year && !searchParams?.month) {
     const parsedYear = parseInt(searchParams.year);
     const month = 0;
 
@@ -69,7 +69,7 @@ export default async function Home({
     };
   }
 
-  if (searchParams.year && searchParams.month) {
+  if (searchParams?.year && searchParams?.month) {
     const parsedMonth = parseInt(searchParams.month);
     const parsedYear = parseInt(searchParams.year);
 
@@ -111,22 +111,27 @@ export default async function Home({
   return (
     <main>
       <Navbar />
-      <div className="flex h-full flex-row items-baseline justify-around p-24">
-        <div className='flex flex-col items-center my-auto gap-y-2'>
+      <div className="flex flex-col items-center justify-center max-w-full gap-4 pt-44 mx-auto lg:flex-row lg:max-w-screen-xl lg:pt-32">
+        <TotalIncomes incomes={incomes} />
+        <TotalExpenses expenses={expenses} />
+      </div>
+      <div className='flex flex-col items-center justify-around py-10 lg:flex-row lg:items-baseline'>
+        <div className='flex flex-col items-center my-auto mx-auto gap-y-2 lg:hidden'>
           <MonthFilter />
           <YearFilter />
           <DeleteFilters />
-          <TotalExpenses expenses={expenses} />
-          <TotalIncomes incomes={incomes} />
         </div>
-      </div>
-      <div className='flex flex-row items-baseline justify-around py-10'>
         <div className='flex flex-col items-center gap-5'>
-          <h1 className='text-3xl text-black font-bold dark:text-white'>Resumen Gastos</h1>
+          <h1 className='text-4xl text-black font-bold dark:text-white'>Resumen Gastos</h1>
           <RegisterExpense expenses={expenses} />
         </div>
-        <div className='flex flex-col items-center gap-5'>
-          <h1 className='text-3xl text-black font-bold dark:text-white'>Resumen Ingresos</h1>
+        <div className='hidden flex-col items-center my-auto gap-y-2 lg:flex'>
+          <MonthFilter />
+          <YearFilter />
+          <DeleteFilters />
+        </div>
+        <div className='flex flex-col items-center gap-5 my-20 lg:my-0'>
+          <h1 className='text-4xl text-black font-bold dark:text-white'>Resumen Ingresos</h1>
           <RegisterIncome incomes={incomes} />
         </div>
       </div>
