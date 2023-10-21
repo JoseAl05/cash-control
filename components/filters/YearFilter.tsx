@@ -1,14 +1,21 @@
 'use client'
 
 import { years } from '@/constants';
+import { ChangeEvent } from 'react';
 import qs from 'query-string';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '../ui/button';
 
+interface Query{
+    month?:string;
+    year?:string;
+}
+
+
 const YearFilter = () => {
 
-    let currentQuery = {};
+    let currentQuery:Query = {};
 
     const router = useRouter();
     const pathname = usePathname();
@@ -32,7 +39,8 @@ const YearFilter = () => {
         };
 
         if(currentYear === e.target.value){
-            delete updatedQuery.year;
+            //@ts-ignore
+            delete updatedQuery['year'];
         }
 
 
@@ -46,7 +54,7 @@ const YearFilter = () => {
     }
 
     return (
-        <div className='mt-5'>
+        <div className='my-5'>
             <select onChange={(e) => onChange(e)} className='w-32 p-2 rounded-lg border border-primary dark:bg-background'>
                 {
                     years.map(year => (
