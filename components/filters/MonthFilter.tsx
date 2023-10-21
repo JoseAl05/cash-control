@@ -6,9 +6,14 @@ import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { months } from '@/constants';
 
+interface Query{
+    month?:string;
+    year?:string;
+}
+
 const MonthFilter = () => {
 
-    let currentQuery = {};
+    let currentQuery:Query = {};
 
     const router = useRouter();
     const pathname = usePathname();
@@ -32,7 +37,8 @@ const MonthFilter = () => {
         };
 
         if (currentMonth === monthValue.toString()) {
-            delete updatedQuery.month;
+            //@ts-ignore
+            delete updatedQuery['month'];
         }
 
         const url = qs.stringifyUrl({
@@ -46,7 +52,7 @@ const MonthFilter = () => {
     }
 
     return (
-        <div className='grid grid-cols-2 gap-3 md:grid-cols-3'>
+        <div className='grid grid-cols-2 gap-5 md:grid-cols-3'>
             {
                 months.map(month => (
                     <div
@@ -60,11 +66,13 @@ const MonthFilter = () => {
                                 p-1
                                 rounded-md
                                 text-white
-                                text-md
+                                text-lg
                                 font-medium
                                 ring-offset-background
                                 cursor-pointer
                                 bg-[#007BFF]
+                                dark:bg-background
+                                dark:hover:bg-[#007BFF]
                                 transition-colors
                                 focus-visible:outline-none
                                 focus-visible:ring-2
@@ -74,7 +82,7 @@ const MonthFilter = () => {
                                 disabled:opacity-50
                                 hover:bg-[#007BFF]/70
                             `,
-                                params.get('month') === month.value && params.get('month') ? 'bg-black/90 text-white dark:bg-white dark:text-black' : ''
+                                params.get('month') === month.value && params.get('month') ? 'bg-black/90 text-white dark:bg-[#007BFF] dark:text-white' : ''
                             )}
                     >
                         {month.label}
