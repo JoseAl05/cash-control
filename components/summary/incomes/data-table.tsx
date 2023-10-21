@@ -63,7 +63,7 @@ export function DataTableIncomes<TData, TValue>({
             </div>
             <div className="rounded-md border">
                 <Table>
-                    <TableHeader className='text-lg'>
+                    <TableHeader className='text-sm bg-background lg:text-xl'>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
@@ -81,7 +81,7 @@ export function DataTableIncomes<TData, TValue>({
                             </TableRow>
                         ))}
                     </TableHeader>
-                    <TableBody className='text-lg'>
+                    <TableBody className='text-center text-sm lg:text-lg'>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
