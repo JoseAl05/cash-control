@@ -12,7 +12,7 @@ const DeleteFilters = () => {
     }
 
     return (
-        <Button size='sm' variant='destructive' onClick={cleanFilters}>
+        <Button size='lg' variant='destructive' onClick={cleanFilters} className='my-10'>
             Limpiar filtros
         </Button>
     );
