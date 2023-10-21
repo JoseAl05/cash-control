@@ -1,3 +1,8 @@
+interface Years{
+  label:string;
+  value:string;
+}
+
 export const months = [
   {
     value: '1',
@@ -49,7 +54,7 @@ export const months = [
   },
 ];
 
-const years = [];
+const years:Years[] = [];
 
 for (let year = 2023; year <= 2030; year++) {
   years.push({
