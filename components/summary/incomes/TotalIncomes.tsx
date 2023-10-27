@@ -22,7 +22,7 @@ const TotalIncomes = ({
                 <CardTitle className="text-2xl font-medium">
                     Total Ingresos
                 </CardTitle>
-                <DollarSign className='h-4 w-4 text-muted-foreground'/>
+                <DollarSign className='h-4 w-4 text-muted-foreground' color='green'/>
             </CardHeader>
             <CardContent>
                 <p className="text-3xl text-center font-bold text-green-700">{totalIncomeFormatted}</p>
