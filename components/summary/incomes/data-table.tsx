@@ -62,7 +62,7 @@ export function DataTableIncomes<TData, TValue>({
                 />
             </div>
             <div className="rounded-md border">
-                <Table>
+                <Table className='bg-background'>
                     <TableHeader className='text-sm bg-background lg:text-xl'>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>

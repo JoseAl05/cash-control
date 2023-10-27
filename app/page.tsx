@@ -111,12 +111,12 @@ export default async function Home({
   return (
     <main>
       <Navbar />
-      <div className="flex flex-col items-center justify-center max-w-full gap-4 pt-44 mx-auto lg:flex-row lg:max-w-screen-xl lg:pt-32">
+      <div className="flex flex-col items-center justify-center max-w-full gap-4 pt-52 mx-auto lg:flex-row lg:max-w-screen-xl lg:pt-32">
         <TotalIncomes incomes={incomes} />
         <TotalExpenses expenses={expenses} />
       </div>
       <div className='flex flex-col items-center justify-around py-10 lg:flex-row lg:items-baseline'>
-        <div className='flex flex-col items-center my-auto mx-auto gap-y-2 lg:hidden'>
+        <div className='flex flex-col items-center mx-auto gap-y-2 lg:hidden'>
           <MonthFilter />
           <YearFilter />
           <DeleteFilters />
