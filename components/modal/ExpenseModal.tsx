@@ -76,7 +76,7 @@ const ExpenseModal = () => {
                                 name='value'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className='text-lg'>Valor Gastado</FormLabel>
+                                        <FormLabel className='text-lg'>Valor Gastado.</FormLabel>
                                         <div className='flex flex-row items-center'>
                                             <DollarSign size={20} className='absolute' />
                                             <FormControl>
@@ -123,6 +123,7 @@ const ExpenseModal = () => {
                                             <PopoverTrigger asChild>
                                                 <FormControl>
                                                     <Button
+                                                        id='calendar'
                                                         variant="outline"
                                                         className={cn(
                                                             "w-[240px] pl-3 text-left font-normal",
@@ -167,7 +168,7 @@ const ExpenseModal = () => {
                                             </Button>
                                         </>
                                     ) : (
-                                        <Button variant='primary'>
+                                        <Button variant='primary' type='submit'>
                                             Registrar
                                         </Button>
                                     )

@@ -20,7 +20,7 @@ const RegisterIncome = ({
     return (
         <>
             <DataTableIncomes columns={columnsIncomes} data={incomes} />
-            <Button onClick={() => onOpen('createIncome')} size='lg' variant='primary'>
+            <Button id='register-income' onClick={() => onOpen('createIncome')} size='lg' variant='primary'>
                 Registrar Ingreso
             </Button>
         </>

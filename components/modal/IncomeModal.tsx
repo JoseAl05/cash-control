@@ -98,7 +98,7 @@ const IncomeModal = () => {
                                 name='value'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className='text-lg'>Ingreso</FormLabel>
+                                        <FormLabel className='text-lg'>Ingreso.</FormLabel>
                                         <div className='flex flex-row items-center'>
                                             <DollarSign size={20} className='absolute' />
                                             <FormControl>
@@ -121,8 +121,9 @@ const IncomeModal = () => {
                                 name='incomeType'
                                 render={({ field }) => (
                                     <FormItem className='mt-5'>
-                                        <FormLabel className='text-lg'>Tipo de Ingreso</FormLabel>
+                                        <FormLabel className='text-lg'>Tipo de Ingreso.</FormLabel>
                                         <Select
+                                            name='incomeType'
                                             disabled={isSubmitting}
                                             onValueChange={field.onChange}
                                             value={field.value}
@@ -161,6 +162,7 @@ const IncomeModal = () => {
                                             <PopoverTrigger asChild>
                                                 <FormControl>
                                                     <Button
+                                                        id='calendar'
                                                         variant="outline"
                                                         className={cn(
                                                             "w-[240px] pl-3 text-left font-normal",
@@ -205,7 +207,7 @@ const IncomeModal = () => {
                                             </Button>
                                         </>
                                     ) : (
-                                        <Button variant='primary'>
+                                        <Button variant='primary' type='submit'>
                                             Registrar
                                         </Button>
                                     )

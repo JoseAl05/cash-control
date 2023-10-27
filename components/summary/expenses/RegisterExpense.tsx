@@ -19,7 +19,7 @@ const RegisterExpense = ({
     return (
         <>
             <DataTableExpenses columns={columnsExpenses} data={expenses} />
-            <Button onClick={() => { onOpen('createExpense') }} size='lg' variant='primary'>
+            <Button id='register-expense' onClick={() => { onOpen('createExpense') }} size='lg' variant='primary'>
                 Registrar Gasto
             </Button>
         </>
