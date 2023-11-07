@@ -1,16 +1,17 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
+import IncomeActions from './IncomeActions';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
+export type Income = {
     value: number;
     income_type: string;
     date_of_income: Date;
 }
 
-export const columnsIncomes: ColumnDef<Payment>[] = [
+export const columnsIncomes: ColumnDef<Income>[] = [
     {
         accessorKey: 'value',
         header: 'Ingreso',
@@ -38,5 +39,9 @@ export const columnsIncomes: ColumnDef<Payment>[] = [
 
             return `${day}/${month}/${year}`;
         }
+    },
+    {
+        id: 'actions',
+        cell: ({row}) => <IncomeActions income={row.original}/>
     }
 ]

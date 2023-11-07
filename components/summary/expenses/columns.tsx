@@ -1,28 +1,31 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
+import ExpenseActions from './ExpenseActions';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
+export type Expense = {
+    id: string;
     description: string;
     value: number;
     date_of_expense: Date;
 }
 
-export const columnsExpenses: ColumnDef<Payment>[] = [
+export const columnsExpenses: ColumnDef<Expense>[] = [
     {
         accessorKey: 'description',
         header: 'Descripcion',
     },
     {
+        id: 'value',
         accessorKey: 'value',
         header: 'Gasto',
-        cell:({row}) => {
+        cell: ({ row }) => {
             const amount = parseFloat(row.getValue('value'))
-            const formatted = new Intl.NumberFormat('es-CL',{
-                style:'currency',
-                currency:'CLP'
+            const formatted = new Intl.NumberFormat('es-CL', {
+                style: 'currency',
+                currency: 'CLP'
             }).format(amount);
             return <div className='text-right font-medium'>{formatted}</div>
         }
@@ -36,6 +39,20 @@ export const columnsExpenses: ColumnDef<Payment>[] = [
             const year = row.original.date_of_expense.getFullYear();
 
             return `${day}/${month}/${year}`;
+        }
+    },
+    {
+        id: 'actions',
+        header: 'Acciones',
+        cell: ({ row }) => {
+            console.log(row);
+            return <ExpenseActions
+                expenseId={row.original.id}
+                value={row.original.value}
+                description={row.original.description}
+                dateOfExpense={row.original.date_of_expense}
+
+            />
         }
     }
 ]
