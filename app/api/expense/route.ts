@@ -11,10 +11,10 @@ export async function GET() {
     }
 
     const expenses = await db.expense.findMany({
-        where:{
-            user_id:user.id
-        }
-    })
+      where: {
+        user_id: user.id,
+      },
+    });
 
     return NextResponse.json(expenses);
   } catch (error) {
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       data: {
         value,
         description,
-        date_of_expense:dateOfExpense,
+        date_of_expense: dateOfExpense,
         user_id: user.id,
       },
     });
@@ -44,6 +44,32 @@ export async function POST(req: Request) {
     return NextResponse.json(expense);
   } catch (error) {
     console.log('EXPENSE POST', error);
+    return new NextResponse('Internal server error', { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { expenseId } = await req.json();
+    const user = await currentUser();
+
+    if (!user) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    if (!expenseId) {
+      return new NextResponse('Expense Id is required', { status: 400 });
+    }
+
+    const expense = await db.expense.delete({
+      where: {
+        id: expenseId,
+      },
+    });
+
+    return NextResponse.json(expense);
+  } catch (error) {
+    console.log('EXPENSE DELETE', error);
     return new NextResponse('Internal server error', { status: 500 });
   }
 }
