@@ -6,6 +6,7 @@ import Navbar from '@/components/navbar/Navbar'
 import ModalProvider from '@/components/modal/ModalProvider'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { cn } from '@/lib/utils'
+import ToasterProvider from '@/components/toaster-provider/ToasterProvider'
 
 const font = Lato({ subsets: ['latin'], weight: '700' })
 
@@ -35,6 +36,7 @@ export default function RootLayout({
             storageKey='ChatAppTheme'
           >
             <ModalProvider />
+            <ToasterProvider />
             {children}
           </ThemeProvider>
         </body>
