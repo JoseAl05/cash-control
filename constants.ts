@@ -1,6 +1,6 @@
-interface Years{
-  label:string;
-  value:string;
+interface Years {
+  label: string;
+  value: string;
 }
 
 export const months = [
@@ -54,7 +54,7 @@ export const months = [
   },
 ];
 
-const years:Years[] = [];
+const years: Years[] = [];
 
 for (let year = 2023; year <= 2030; year++) {
   years.push({
@@ -64,3 +64,26 @@ for (let year = 2023; year <= 2030; year++) {
 }
 
 export { years };
+
+export const incomeTypes = [
+  {
+    value: 'Sueldo',
+    label: 'Sueldo',
+  },
+  {
+    value: 'Boleta',
+    label: 'Boleta',
+  },
+  {
+    value: 'Devolución',
+    label: 'Devolución',
+  },
+  {
+    value: 'Regalo',
+    label: 'Regalo',
+  },
+  {
+    value: 'Otro',
+    label: 'Otro',
+  },
+];
