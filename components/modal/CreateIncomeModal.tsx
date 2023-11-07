@@ -1,21 +1,22 @@
 'use client'
 
 import * as z from 'zod';
-import { useEffect, useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { cn } from '@/lib/utils';
-import axios from 'axios';
 import { useModal } from '@/hooks/useModal';
-import { useForm } from 'react-hook-form';
+import { cn } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
-import { CircleDashed, DollarSign, CalendarIcon } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Calendar } from '../ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Label } from '../ui/label';
+import { CircleDashed, DollarSign, CalendarIcon } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { incomeTypes } from '@/constants';
 
 const formSchema = z.object({
     value: z.coerce
@@ -25,35 +26,35 @@ const formSchema = z.object({
         .int({
             message: 'El valor debe ser un numero.'
         }),
-    description: z.string().min(5, { message: 'La descripcion debe tener al menos 5 carácteres' }),
-    dateOfExpense: z.date({
-        required_error: 'Se requiere una fecha del gasto que realizó'
+    incomeType: z.string({
+        required_error:'Se requiere un tipo de ingreso'
+    }).min(1,{
+        message:'Seleccione una opción.'
+    }),
+    dateOfIncome: z.date({
+        required_error: 'Se requiere una fecha del ingreso que obtuvo.'
     })
+});
 
-})
 
-export const revalidate = 0;
-
-const ExpenseModal = () => {
-
+const CreateIncomeModal = () => {
     const { isOpen, onClose, type, onOpen } = useModal();
 
-    const isModalOpen = isOpen && type === 'createExpense';
+    const isModalOpen = isOpen && type === 'createIncome';
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             value: 0,
-            description: ''
+            incomeType: '',
         },
     })
 
     const isSubmitting = form.formState.isSubmitting;
 
-
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
-        await axios.post('/api/expense', values);
+        await axios.post('/api/income', values);
 
         form.reset();
         onClose();
@@ -65,7 +66,7 @@ const ExpenseModal = () => {
             <DialogContent className='bg-white text-black p-0 overflow-hidden dark:bg-[#313338]'>
                 <DialogHeader className='pt-8 px-6'>
                     <DialogTitle className='text-2xl text-center font-bold text-black dark:text-white'>
-                        Registrar Gasto.
+                        Registrar Ingreso.
                     </DialogTitle>
                 </DialogHeader>
                 <div className='p-6'>
@@ -76,7 +77,7 @@ const ExpenseModal = () => {
                                 name='value'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className='text-lg'>Valor Gastado.</FormLabel>
+                                        <FormLabel className='text-lg'>Ingreso.</FormLabel>
                                         <div className='flex flex-row items-center'>
                                             <DollarSign size={20} className='absolute' />
                                             <FormControl>
@@ -89,36 +90,53 @@ const ExpenseModal = () => {
                                                 />
                                             </FormControl>
                                         </div>
+                                        <FormDescription>Ingrese la entrada de dinero que tuvo.</FormDescription>
                                         <FormMessage className='text-red-600' />
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
-                                name='description'
+                                name='incomeType'
                                 render={({ field }) => (
-                                    <FormItem className='pt-5'>
-                                        <FormLabel className='text-lg'>Descripcion del Gasto.</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder='Indique pequeña descripcion de lo que gastó'
-                                                disabled={isSubmitting}
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormDescription>
-                                            Ingrese el nombre del producto o una pequeña descripcion de lo que gastó.
-                                        </FormDescription>
+                                    <FormItem className='mt-5'>
+                                        <FormLabel className='text-lg'>Tipo de Ingreso.</FormLabel>
+                                        <Select
+                                            name='incomeType'
+                                            disabled={isSubmitting}
+                                            onValueChange={field.onChange}
+                                            value={field.value}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue
+                                                        defaultValue={field.value}
+                                                    />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {incomeTypes.map(incomeType => (
+                                                    <SelectItem
+                                                        key={incomeType.value}
+                                                        value={incomeType.value}
+                                                    >
+                                                        {incomeType.label}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription>Seleccione un tipo de ingreso.</FormDescription>
                                         <FormMessage className='text-red-600' />
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
-                                name="dateOfExpense"
+                                name="dateOfIncome"
                                 render={({ field }) => (
                                     <FormItem className="flex flex-col mt-5">
-                                        <FormLabel className='text-lg'>Fecha del Gasto.</FormLabel>
+                                        <FormLabel className='text-lg'>Fecha del Ingreso.</FormLabel>
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <FormControl>
@@ -152,7 +170,7 @@ const ExpenseModal = () => {
                                             </PopoverContent>
                                         </Popover>
                                         <FormDescription>
-                                            Seleccione la fecha en la que realizó el gasto.
+                                            Seleccione la fecha en la que recibió su ingreso.
                                         </FormDescription>
                                         <FormMessage className='text-red-600' />
                                     </FormItem>
@@ -183,4 +201,4 @@ const ExpenseModal = () => {
     );
 }
 
-export default ExpenseModal;
+export default CreateIncomeModal;

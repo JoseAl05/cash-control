@@ -1,21 +1,28 @@
-'use client'
-
 import * as z from 'zod';
-import { useModal } from '@/hooks/useModal';
-import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { format } from 'date-fns';
-import { useForm } from 'react-hook-form';
+import { cn } from '@/lib/utils';
 import axios from 'axios';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
+import { useForm } from 'react-hook-form';
+import { format } from 'date-fns';
+import { useModal } from '@/hooks/useModal';
+import { CircleDashed, DollarSign, CalendarIcon } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Calendar } from '../ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Label } from '../ui/label';
-import { CircleDashed, DollarSign, CalendarIcon } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { incomeTypes } from '@/constants';
+
+interface EditIncomeModalProps {
+    incomeId: string;
+    value: number;
+    incomeType: string;
+    dateOfIncome: Date;
+}
 
 const formSchema = z.object({
     value: z.coerce
@@ -26,60 +33,55 @@ const formSchema = z.object({
             message: 'El valor debe ser un numero.'
         }),
     incomeType: z.string({
-        required_error:'Se requiere un tipo de ingreso'
-    }).min(1,{
-        message:'Seleccione una opción.'
+        required_error: 'Se requiere un tipo de ingreso'
+    }).min(1, {
+        message: 'Seleccione una opción.'
     }),
     dateOfIncome: z.date({
         required_error: 'Se requiere una fecha del ingreso que obtuvo.'
     })
-});
+})
 
-const incomeTypes = [
-    {
-        value: 'Sueldo',
-        label: 'Sueldo',
-    },
-    {
-        value: 'Boleta',
-        label: 'Boleta',
-    },
-    {
-        value: 'Devolución',
-        label: 'Devolución',
-    },
-    {
-        value: 'Regalo',
-        label: 'Regalo',
-    },
-    {
-        value: 'Otro',
-        label: 'Otro',
-    },
-]
+const EditIncomeModal = ({
+    incomeId,
+    value,
+    incomeType,
+    dateOfIncome
+}: EditIncomeModalProps) => {
 
-const IncomeModal = () => {
+    const [isMounted, setIsMounted] = useState(false);
     const { isOpen, onClose, type, onOpen } = useModal();
 
-    const isModalOpen = isOpen && type === 'createIncome';
+    const isModalOpen = isOpen && type === 'editIncome';
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            value: 0,
-            incomeType: '',
+            value: value,
+            incomeType: incomeType,
+            dateOfIncome: dateOfIncome
         },
     })
 
     const isSubmitting = form.formState.isSubmitting;
 
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
-        await axios.post('/api/income', values);
+        console.log(values);
+        // await axios.patch(`/api/expense/${expenseId}`, values);
 
-        form.reset();
-        onClose();
-        window.location.reload();
+        // form.reset();
+        // onClose();
+        // window.location.reload();
+    }
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) {
+        return null;
     }
 
     return (
@@ -87,7 +89,7 @@ const IncomeModal = () => {
             <DialogContent className='bg-white text-black p-0 overflow-hidden dark:bg-[#313338]'>
                 <DialogHeader className='pt-8 px-6'>
                     <DialogTitle className='text-2xl text-center font-bold text-black dark:text-white'>
-                        Registrar Ingreso.
+                        Modificar Ingreso.
                     </DialogTitle>
                 </DialogHeader>
                 <div className='p-6'>
@@ -98,20 +100,20 @@ const IncomeModal = () => {
                                 name='value'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className='text-lg'>Ingreso.</FormLabel>
+                                        <FormLabel className='text-lg'>Valor Gastado.</FormLabel>
                                         <div className='flex flex-row items-center'>
                                             <DollarSign size={20} className='absolute' />
                                             <FormControl>
                                                 <Input
                                                     type='number'
                                                     placeholder='Ingrese la cantidad que gastó'
+                                                    value={value}
                                                     className='pl-6 pb-2'
                                                     disabled={isSubmitting}
                                                     {...field}
                                                 />
                                             </FormControl>
                                         </div>
-                                        <FormDescription>Ingrese la entrada de dinero que tuvo.</FormDescription>
                                         <FormMessage className='text-red-600' />
                                     </FormItem>
                                 )}
@@ -126,7 +128,7 @@ const IncomeModal = () => {
                                             name='incomeType'
                                             disabled={isSubmitting}
                                             onValueChange={field.onChange}
-                                            value={field.value}
+                                            value={incomeType}
                                             defaultValue={field.value}
                                         >
                                             <FormControl>
@@ -157,7 +159,7 @@ const IncomeModal = () => {
                                 name="dateOfIncome"
                                 render={({ field }) => (
                                     <FormItem className="flex flex-col mt-5">
-                                        <FormLabel className='text-lg'>Fecha del Ingreso.</FormLabel>
+                                        <FormLabel className='text-lg'>Fecha del Gasto.</FormLabel>
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <FormControl>
@@ -181,7 +183,7 @@ const IncomeModal = () => {
                                             <PopoverContent className="w-auto p-0" align="start">
                                                 <Calendar
                                                     mode="single"
-                                                    selected={field.value}
+                                                    selected={dateOfIncome}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
                                                         date > new Date() || date < new Date("1900-01-01")
@@ -191,7 +193,7 @@ const IncomeModal = () => {
                                             </PopoverContent>
                                         </Popover>
                                         <FormDescription>
-                                            Seleccione la fecha en la que recibió su ingreso.
+                                            Seleccione la fecha en la que realizó el gasto.
                                         </FormDescription>
                                         <FormMessage className='text-red-600' />
                                     </FormItem>
@@ -203,12 +205,12 @@ const IncomeModal = () => {
                                         <>
                                             <Button variant='primary' disabled>
                                                 <CircleDashed size={20} className='mx-2 animate-spin' />
-                                                Registrando...
+                                                Modificando...
                                             </Button>
                                         </>
                                     ) : (
                                         <Button variant='primary' type='submit'>
-                                            Registrar
+                                            Modificar
                                         </Button>
                                     )
                                 }
@@ -218,8 +220,7 @@ const IncomeModal = () => {
                 </div>
             </DialogContent>
         </Dialog>
-
     );
 }
 
-export default IncomeModal;
+export default EditIncomeModal;

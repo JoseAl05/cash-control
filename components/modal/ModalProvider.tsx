@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import ExpenseModal from './ExpenseModal';
-import IncomeModal from './IncomeModal';
+import CreateExpenseModal from './CreateExpenseModal';
+import CreateIncomeModal from './CreateIncomeModal';
 
 const ModalProvider = () => {
 
@@ -18,8 +18,8 @@ const ModalProvider = () => {
 
     return (
         <>
-            <ExpenseModal />
-            <IncomeModal />
+            <CreateExpenseModal />
+            <CreateIncomeModal />
         </>
     );
 }
