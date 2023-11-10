@@ -4,7 +4,6 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { cn } from '@/lib/utils';
-import { Expense } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useModal } from '@/hooks/useModal';
@@ -23,18 +22,12 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import EditExpenseModal from '@/components/modal/EditExpenseModal';
-import { Payment } from './columns';
+import { EditExpenseType } from '@/types';
 
 interface ExpenseActionsProps {
-    expense: Expense;
+    expense: EditExpenseType;
 }
 
 

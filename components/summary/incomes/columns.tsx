@@ -6,6 +6,7 @@ import IncomeActions from './IncomeActions';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Income = {
+    id:string;
     value: number;
     income_type: string;
     date_of_income: Date;

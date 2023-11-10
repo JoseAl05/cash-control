@@ -108,7 +108,6 @@ const EditIncomeModal = ({
                                                 <Input
                                                     type='number'
                                                     placeholder='Ingrese la cantidad que gastó'
-                                                    value={value}
                                                     className='pl-6 pb-2'
                                                     disabled={isSubmitting}
                                                     {...field}

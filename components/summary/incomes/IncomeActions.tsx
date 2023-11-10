@@ -1,7 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
-import { Income } from '@prisma/client';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -20,9 +19,10 @@ import { useModal } from '@/hooks/useModal';
 import EditExpenseModal from '@/components/modal/EditExpenseModal';
 import EditIncomeModal from '@/components/modal/EditIncomeModal';
 import { CircleDashed } from 'lucide-react';
+import { EditIncomeType } from '@/types';
 
 interface IncomeActionsProps {
-    income: Income;
+    income: EditIncomeType;
 }
 
 const IncomeActions = ({
