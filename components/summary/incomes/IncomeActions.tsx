@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { useModal } from '@/hooks/useModal';
 import EditExpenseModal from '@/components/modal/EditExpenseModal';
 import EditIncomeModal from '@/components/modal/EditIncomeModal';
+import { CircleDashed } from 'lucide-react';
 
 interface IncomeActionsProps {
     income: Income;
@@ -29,59 +30,73 @@ const IncomeActions = ({
 }: IncomeActionsProps) => {
 
     const router = useRouter();
-    const { onOpen,isOpen } = useModal();
+    const { onOpen, isOpen } = useModal();
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const deleteIncome = async () => {
         const isLoading = toast.loading('Eliminando...');
+        setIsDeleting(true);
 
         await axios.delete(`/api/income/${income.id}`)
             .then(() => {
                 toast.dismiss(isLoading);
+                setIsDeleting(false);
                 toast.success('Item eliminado con éxito!');
                 router.refresh();
             })
             .catch(() => {
+                setIsDeleting(false);
                 toast.error('Error al eliminar item. Por favor intentelo denuevo.');
             })
             .finally(() => {
                 toast.dismiss(isLoading);
+                setIsDeleting(false);
             })
     }
 
     return (
-        <>
-            {
-                isOpen && (
-                    <EditIncomeModal
-                        incomeId={income.id}
-                        value={income.value}
-                        incomeType={income.income_type}
-                        dateOfIncome={income.date_of_income}
-                    />
-                )
-            }
-            <div className='flex justify-center gap-x-2'>
-                <AlertDialog>
-                    <AlertDialogTrigger className='bg-red-700 rounded-lg p-2 text-sm'>Eliminar</AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>¿Está seguro que quiere eliminar este item?.</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                Está acción no se puede deshacer.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <Button onClick={deleteIncome} variant='destructive'>Eliminar</Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-                <Button id='edit-income' onClick={() => { onOpen('editIncome') }} size='sm' variant='primary'>
-                    Modificar
-                </Button>
+        <div className='flex justify-center gap-x-2'>
+            <AlertDialog>
+                <AlertDialogTrigger className='bg-red-700 rounded-lg p-2 text-sm'>Eliminar</AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>¿Está seguro que quiere eliminar el siguiente gasto?: {income.value}.</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Está acción no se puede deshacer.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+                        {
+                            isDeleting ? (
+                                <Button variant='destructive' disabled={isDeleting}>
+                                    <CircleDashed size={20} className='mx-2 animate-spin' />
+                                    Eliminando...
+                                </Button>
+                            ) : (
 
-            </div>
-        </>
+                                <Button onClick={deleteIncome} variant='destructive'>Eliminar</Button>
+                            )
+                        }
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+            <AlertDialog>
+                <AlertDialogTrigger className='bg-blue-700 rounded-lg p-2 text-sm' onClick={() => { onOpen('editIncome') }}>Modificar</AlertDialogTrigger>
+                <AlertDialogContent>
+                    {
+                        isOpen && (
+                            <EditIncomeModal
+                                incomeId={income.id}
+                                value={income.value}
+                                incomeType={income.income_type}
+                                dateOfIncome={income.date_of_income}
+                            />
+                        )
+                    }
+                </AlertDialogContent>
+            </AlertDialog>
+        </div>
     );
 }
 

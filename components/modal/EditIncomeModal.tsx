@@ -16,6 +16,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { incomeTypes } from '@/constants';
+import { AlertDialogCancel } from '../ui/alert-dialog';
 
 interface EditIncomeModalProps {
     incomeId: string;
@@ -69,11 +70,11 @@ const EditIncomeModal = ({
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
         console.log(values);
-        // await axios.patch(`/api/expense/${expenseId}`, values);
+        await axios.patch(`/api/income/${incomeId}`, values);
 
-        // form.reset();
-        // onClose();
-        // window.location.reload();
+        form.reset();
+        onClose();
+        window.location.reload();
     }
 
     useEffect(() => {
@@ -85,7 +86,7 @@ const EditIncomeModal = ({
     }
 
     return (
-        <Dialog open={isModalOpen} onOpenChange={onClose}>
+        <Dialog open={isModalOpen}>
             <DialogContent className='bg-white text-black p-0 overflow-hidden dark:bg-[#313338]'>
                 <DialogHeader className='pt-8 px-6'>
                     <DialogTitle className='text-2xl text-center font-bold text-black dark:text-white'>
@@ -128,7 +129,6 @@ const EditIncomeModal = ({
                                             name='incomeType'
                                             disabled={isSubmitting}
                                             onValueChange={field.onChange}
-                                            value={incomeType}
                                             defaultValue={field.value}
                                         >
                                             <FormControl>
@@ -199,7 +199,7 @@ const EditIncomeModal = ({
                                     </FormItem>
                                 )}
                             />
-                            <DialogFooter className='px-6 py-4'>
+                            <DialogFooter className='sm:justify-between py-4 gap-x-2'>
                                 {
                                     isSubmitting ? (
                                         <>
@@ -209,9 +209,12 @@ const EditIncomeModal = ({
                                             </Button>
                                         </>
                                     ) : (
-                                        <Button variant='primary' type='submit'>
-                                            Modificar
-                                        </Button>
+                                        <>
+                                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                            <Button variant='primary' type='submit'>
+                                                Modificar
+                                            </Button>
+                                        </>
                                     )
                                 }
                             </DialogFooter>

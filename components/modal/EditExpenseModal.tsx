@@ -9,6 +9,17 @@ import { useModal } from '@/hooks/useModal';
 import { CircleDashed, DollarSign, CalendarIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Calendar } from '../ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Label } from '../ui/label';
@@ -16,7 +27,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
 interface EditExpenseModalProps {
-    expenseId:string;
+    expenseId: string;
     value: number;
     description: string;
     dateOfExpense: Date;
@@ -43,6 +54,7 @@ const EditExpenseModal = ({
     dateOfExpense
 }: EditExpenseModalProps) => {
 
+
     const [isMounted, setIsMounted] = useState(false);
     const { isOpen, onClose, type, onOpen } = useModal();
 
@@ -53,7 +65,7 @@ const EditExpenseModal = ({
         defaultValues: {
             value: value,
             description: description,
-            dateOfExpense:dateOfExpense
+            dateOfExpense: dateOfExpense
         },
     })
 
@@ -78,7 +90,7 @@ const EditExpenseModal = ({
     }
 
     return (
-        <Dialog open={isModalOpen} onOpenChange={onClose}>
+        <Dialog open={isModalOpen}>
             <DialogContent className='bg-white text-black p-0 overflow-hidden dark:bg-[#313338]'>
                 <DialogHeader className='pt-8 px-6'>
                     <DialogTitle className='text-2xl text-center font-bold text-black dark:text-white'>
@@ -100,7 +112,6 @@ const EditExpenseModal = ({
                                                 <Input
                                                     type='number'
                                                     placeholder='Ingrese la cantidad que gastó'
-                                                    defaultValue={value}
                                                     className='pl-6 pb-2'
                                                     disabled={isSubmitting}
                                                     {...field}
@@ -120,7 +131,6 @@ const EditExpenseModal = ({
                                         <FormControl>
                                             <Input
                                                 placeholder='Indique pequeña descripcion de lo que gastó'
-                                                defaultValue={description}
                                                 disabled={isSubmitting}
                                                 {...field}
                                             />
@@ -161,7 +171,7 @@ const EditExpenseModal = ({
                                             <PopoverContent className="w-auto p-0" align="start">
                                                 <Calendar
                                                     mode="single"
-                                                    selected={dateOfExpense}
+                                                    selected={field.value}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
                                                         date > new Date() || date < new Date("1900-01-01")
@@ -177,7 +187,7 @@ const EditExpenseModal = ({
                                     </FormItem>
                                 )}
                             />
-                            <DialogFooter className='px-6 py-4'>
+                            <DialogFooter className='sm:justify-between py-4 gap-x-2'>
                                 {
                                     isSubmitting ? (
                                         <>
@@ -187,9 +197,12 @@ const EditExpenseModal = ({
                                             </Button>
                                         </>
                                     ) : (
-                                        <Button variant='primary' type='submit'>
-                                            Modificar
-                                        </Button>
+                                        <>
+                                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                            <Button variant='primary' type='submit'>
+                                                Modificar
+                                            </Button>
+                                        </>
                                     )
                                 }
                             </DialogFooter>
