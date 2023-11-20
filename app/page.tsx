@@ -1,6 +1,4 @@
-import DeleteFilters from '@/components/buttons/DeleteFilters';
-import MonthFilter from '@/components/filters/MonthFilter';
-import YearFilter from '@/components/filters/YearFilter';
+import DateFilter from '@/components/filters/DateFilter';
 import Navbar from '@/components/navbar/Navbar';
 import RegisterExpense from '@/components/summary/expenses/RegisterExpense';
 import TotalExpenses from '@/components/summary/expenses/TotalExpenses';
@@ -27,65 +25,22 @@ export default async function Home({
 
   const user = await currentUser();
 
-  if (searchParams?.month && !searchParams?.year) {
-    const parsedMonth = parseInt(searchParams.month);
-    const year = new Date().getFullYear();
-    const initialDate = new Date(year, parsedMonth - 1, 1);
-    const lastDate = new Date(year, parsedMonth, 0)
+  if (searchParams?.initialDate && searchParams?.endDate) {
+
+    const initialDate = new Date(searchParams.initialDate);
+    const endDate = new Date(searchParams.endDate);
 
     queryIncome = {
       date_of_income: {
         gte: initialDate,
-        lte: lastDate
+        lte: endDate
       }
     };
 
     queryExpense = {
       date_of_expense: {
         gte: initialDate,
-        lte: lastDate
-      }
-    };
-  }
-
-  if (searchParams?.year && !searchParams?.month) {
-    const parsedYear = parseInt(searchParams.year);
-    const month = 0;
-
-    const initialDate = new Date(parsedYear, month, 1);
-    const lastDate = new Date(parsedYear, month + 12, 0);
-
-    queryIncome = {
-      date_of_income: {
-        gte: initialDate,
-        lte: lastDate
-      }
-    };
-    queryExpense = {
-      date_of_expense: {
-        gte: initialDate,
-        lte: lastDate
-      }
-    };
-  }
-
-  if (searchParams?.year && searchParams?.month) {
-    const parsedMonth = parseInt(searchParams.month);
-    const parsedYear = parseInt(searchParams.year);
-
-    const initialDate = new Date(parsedYear, parsedMonth - 1, 1);
-    const lastDate = new Date(parsedYear, parsedMonth, 0);
-
-    queryIncome = {
-      date_of_income: {
-        gte: initialDate,
-        lte: lastDate
-      }
-    };
-    queryExpense = {
-      date_of_expense: {
-        gte: initialDate,
-        lte: lastDate
+        lte: endDate
       }
     };
   }
@@ -116,23 +71,16 @@ export default async function Home({
         <TotalExpenses expenses={expenses} />
       </div>
       <div className='flex flex-col items-center justify-around py-10 lg:flex-row lg:items-baseline'>
-        <div className='flex flex-col items-center mx-auto gap-y-2 lg:hidden'>
-          <MonthFilter />
-          <YearFilter />
-          <DeleteFilters />
-        </div>
         <div className='flex flex-col items-center gap-5'>
-          <h1 className='text-4xl text-black font-bold dark:text-white'>Resumen Gastos</h1>
-          <RegisterExpense expenses={expenses} />
-        </div>
-        <div className='hidden flex-col items-center my-auto gap-y-2 lg:flex'>
-          <MonthFilter />
-          <YearFilter />
-          <DeleteFilters />
-        </div>
-        <div className='flex flex-col items-center gap-5 my-20 lg:my-0'>
           <h1 className='text-4xl text-black font-bold dark:text-white'>Resumen Ingresos</h1>
           <RegisterIncome incomes={incomes} />
+        </div>
+        <div className='flex flex-col items-center my-auto gap-y-2'>
+          <DateFilter />
+        </div>
+        <div className='flex flex-col items-center gap-5 my-20 lg:my-0'>
+          <h1 className='text-4xl text-black font-bold dark:text-white'>Resumen Gastos</h1>
+          <RegisterExpense expenses={expenses} />
         </div>
       </div>
     </main>
