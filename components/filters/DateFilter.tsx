@@ -18,8 +18,8 @@ import {
 import { usePathname, useRouter } from 'next/navigation'
 
 interface Query {
-    initialDate: Date | undefined;
-    endDate: Date | undefined;
+    initialDate?: string;
+    endDate?: string;
 }
 
 const DateFilter = () => {
@@ -30,8 +30,8 @@ const DateFilter = () => {
 
 
     const [date, setDate] = useState<DateRange | undefined>({
-        from: '',
-        to: ''
+        from: undefined,
+        to: undefined
     });
 
     const setQuery = () => {
@@ -60,7 +60,7 @@ const DateFilter = () => {
 
     const cleanFilters = () => {
         router.push('/');
-        setDate('');
+        setDate(undefined);
     }
 
     return (
