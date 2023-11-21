@@ -2,6 +2,8 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import ExpenseActions from './ExpenseActions';
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { Button } from '@/components/ui/button';
 
 export type Expense = {
     id: string;
@@ -17,7 +19,18 @@ export const columnsExpenses: ColumnDef<Expense>[] = [
     },
     {
         accessorKey: 'value',
-        header: 'Gasto',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className='text-sm sm:text-lg'
+                >
+                    Gasto
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const amount = parseFloat(row.getValue('value'))
             const formatted = new Intl.NumberFormat('es-CL', {
@@ -29,7 +42,18 @@ export const columnsExpenses: ColumnDef<Expense>[] = [
     },
     {
         accessorKey: 'date_of_expense',
-        header: 'Fecha Gasto',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className='text-sm sm:text-lg'
+                >
+                    Fecha de Gasto
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const day = row.original.date_of_expense.getDate();
             const month = row.original.date_of_expense.getMonth() + 1;

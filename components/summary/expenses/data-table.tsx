@@ -3,11 +3,13 @@
 import { useState } from 'react'
 import {
     ColumnDef,
+    SortingState,
     flexRender,
     getCoreRowModel,
     useReactTable,
     getPaginationRowModel,
     ColumnFiltersState,
+    getSortedRowModel,
     getFilteredRowModel,
 } from "@tanstack/react-table"
 
@@ -33,6 +35,7 @@ export function DataTableExpenses<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
 
+    const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
     );
@@ -44,8 +47,11 @@ export function DataTableExpenses<TData, TValue>({
         getPaginationRowModel: getPaginationRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        onSortingChange: setSorting,
+        getSortedRowModel: getSortedRowModel(),
         state: {
             columnFilters,
+            sorting,
         }
     })
 
