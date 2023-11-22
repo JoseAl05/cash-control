@@ -87,7 +87,7 @@ const DateFilter = () => {
                                 format(date.from, "LLL dd, y")
                             )
                         ) : (
-                            <span>Pick a date</span>
+                            <span>Seleccione dos fechas</span>
                         )}
                     </Button>
                 </PopoverTrigger>
