@@ -57,7 +57,7 @@ const IncomeActions = ({
     return (
         <div className='flex justify-center gap-x-2'>
             <AlertDialog>
-                <AlertDialogTrigger className='bg-red-700 rounded-lg p-2 text-sm'>Eliminar</AlertDialogTrigger>
+                <AlertDialogTrigger className='bg-red-700 rounded-lg p-2 text-sm text-white'>Eliminar</AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>¿Está seguro que quiere eliminar el siguiente gasto?: {income.value}.</AlertDialogTitle>
@@ -82,7 +82,7 @@ const IncomeActions = ({
                 </AlertDialogContent>
             </AlertDialog>
             <AlertDialog>
-                <AlertDialogTrigger className='bg-blue-700 rounded-lg p-2 text-sm' onClick={() => { onOpen('editIncome') }}>Modificar</AlertDialogTrigger>
+                <AlertDialogTrigger className='bg-blue-700 rounded-lg p-2 text-sm text-white' onClick={() => { onOpen('editIncome') }}>Modificar</AlertDialogTrigger>
                 <AlertDialogContent>
                     {
                         isOpen && (
