@@ -1,5 +1,6 @@
 import DateFilter from '@/components/filters/DateFilter';
 import Navbar from '@/components/navbar/Navbar';
+import DifferenceExpenseIncome from '@/components/summary/DifferenceExpenseIncome';
 import RegisterExpense from '@/components/summary/expenses/RegisterExpense';
 import TotalExpenses from '@/components/summary/expenses/TotalExpenses';
 import { columnsExpenses } from '@/components/summary/expenses/columns'
@@ -53,8 +54,15 @@ export default async function Home({
     where: {
       user_id: user.id,
       AND: [queryExpense]
-    }
+    },
   });
+
+  const qExpenses = await db.expense.count({
+    where: {
+      user_id: user.id,
+      AND: [queryExpense]
+    },
+  })
 
   const incomes = await db.income.findMany({
     where: {
@@ -63,24 +71,55 @@ export default async function Home({
     }
   });
 
+  const qIncomes = await db.income.count({
+    where: {
+      user_id: user.id,
+      AND: [queryIncome]
+    }
+  })
+
   return (
     <main>
       <Navbar />
       <div className="flex flex-col items-center justify-center max-w-full gap-4 pt-52 mx-auto lg:flex-row lg:max-w-screen-xl lg:pt-32">
-        <TotalIncomes incomes={incomes} />
-        <TotalExpenses expenses={expenses} />
+        <TotalIncomes
+          incomes={incomes}
+        />
+        <TotalExpenses
+          expenses={expenses}
+        />
       </div>
+      <DifferenceExpenseIncome
+        incomes={incomes}
+        expenses={expenses}
+      />
       <div className='flex flex-col items-center justify-around py-10 lg:flex-row lg:items-baseline'>
         <div className='flex flex-col items-center gap-5'>
-          <h1 className='text-4xl text-black font-bold dark:text-white'>Resumen Ingresos</h1>
-          <RegisterIncome incomes={incomes} />
+          <div className='border-2 border-slate-700 bg-white rounded-lg p-5 dark:border-slate-300 dark:bg-background'>
+            <h1 className='text-4xl text-black font-bold dark:text-white'>Resumen Ingresos</h1>
+            <div className='flex flex-col items-center'>
+              <p className='text-slate-700 py-5 dark:text-slate-300'>Cantidad de ingresos registrados</p>
+              <p className='text-3xl text-black dark:text-white'>{qIncomes}</p>
+            </div>
+          </div>
+          <RegisterIncome
+            incomes={incomes}
+          />
         </div>
-        <div className='flex flex-col items-center my-auto gap-y-2'>
+        <div className='flex flex-col gap-y-2'>
           <DateFilter />
         </div>
         <div className='flex flex-col items-center gap-5 my-20 lg:my-0'>
-          <h1 className='text-4xl text-black font-bold dark:text-white'>Resumen Gastos</h1>
-          <RegisterExpense expenses={expenses} />
+          <div className='border-2 border-slate-700 bg-white rounded-lg p-5 dark:border-slate-300 dark:bg-background'>
+            <h1 className='text-4xl text-black font-bold dark:text-white'>Resumen Gastos</h1>
+            <div className='flex flex-col items-center'>
+              <p className='text-slate-700 py-5 dark:text-slate-300'>Cantidad de gastos registrados</p>
+              <p className='text-3xl text-black dark:text-white'>{qExpenses}</p>
+            </div>
+          </div>
+          <RegisterExpense
+            expenses={expenses}
+          />
         </div>
       </div>
     </main>
