@@ -59,7 +59,7 @@ export function DataTableIncomes<TData, TValue>({
         <div>
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Ingrese un tipo de ingreso que desea visualizar..."
+                    placeholder="Busque su ingreso, ej: Sueldo, Boleta"
                     value={(table.getColumn("income_type")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("income_type")?.setFilterValue(event.target.value)
