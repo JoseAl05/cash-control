@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Expense } from '@prisma/client';
 import { DollarSign } from 'lucide-react';
