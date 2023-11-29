@@ -56,18 +56,16 @@ export function DataTableIncomes<TData, TValue>({
     })
 
     return (
-        <div>
-            <div className="flex items-center py-4">
-                <Input
-                    placeholder="Busque su ingreso, ej: Sueldo, Boleta"
-                    value={(table.getColumn("income_type")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("income_type")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
-                />
-            </div>
-            <div className="rounded-md border">
+        <div className='flex flex-col items-center gap-y-5'>
+            <Input
+                placeholder="Busque su ingreso, ej: Sueldo, Boleta"
+                value={(table.getColumn("income_type")?.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                    table.getColumn("income_type")?.setFilterValue(event.target.value)
+                }
+                className="max-w-xs"
+            />
+            <div className="rounded-md border w-2/3 lg:w-full">
                 <Table className='bg-background'>
                     <TableHeader className='text-sm bg-background lg:text-xl'>
                         {table.getHeaderGroups().map((headerGroup) => (

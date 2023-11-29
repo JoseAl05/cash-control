@@ -87,7 +87,7 @@ const EditIncomeModal = ({
 
     return (
         <Dialog open={isModalOpen}>
-            <DialogContent className='bg-white text-black p-0 overflow-hidden dark:bg-[#313338]'>
+            <DialogContent className='bg-white text-black p-0 overflow-hidden w-auto lg:w-full dark:bg-[#313338]'>
                 <DialogHeader className='pt-8 px-6'>
                     <DialogTitle className='text-2xl text-center font-bold text-black dark:text-white'>
                         Modificar Ingreso.

@@ -56,18 +56,16 @@ export function DataTableExpenses<TData, TValue>({
     })
 
     return (
-        <div>
-            <div className="flex items-center py-4">
-                <Input
-                    placeholder="Busque lo que compró..."
-                    value={(table.getColumn("description")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("description")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
-                />
-            </div>
-            <div className="rounded-md border">
+        <div className='flex flex-col items-center gap-y-5'>
+            <Input
+                placeholder="Busque lo que compró..."
+                value={(table.getColumn("description")?.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                    table.getColumn("description")?.setFilterValue(event.target.value)
+                }
+                className="max-w-xs lg:max-w-full"
+            />
+            <div className="rounded-md border w-2/3 lg:w-full">
                 <Table className='bg-background'>
                     <TableHeader className='text-sm bg-background lg:text-xl'>
                         {table.getHeaderGroups().map((headerGroup) => (

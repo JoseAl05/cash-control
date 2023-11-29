@@ -36,29 +36,29 @@ const DifferenceExpenseIncome = ({
     return (
         <Card className='w-1/2 mt-5 mx-auto'>
             <CardHeader className='flex flex-row items-center justify-center space-y-0 space-x-3 pb-2'>
-                <CardTitle className='text-2xl font-medium'>
+                <CardTitle className='text-xl font-medium lg:text-2xl'>
                     Diferencia
                 </CardTitle>
                 {
                     differenceExpenseIncome > totalIncome && (
-                        <DollarSign className='h-4 w-4 text-muted-foreground' color='red' />
+                        <DollarSign className='h-4 w-4' color='red' />
                     )
                 }
                 {
                     differenceExpenseIncome < totalIncome && differenceExpenseIncome !== 0 && (
-                        <DollarSign className='h-4 w-4 text-muted-foreground' color='green' />
+                        <DollarSign className='h-4 w-4' color='green' />
                     )
                 }
                 {
                     differenceExpenseIncome === 0 && (
-                        <DollarSign className='h-4 w-4 text-muted-foreground' color='yellow' />
+                        <DollarSign className='h-4 w-4' color='yellow' />
                     )
                 }
             </CardHeader>
             <CardContent>
                 <p
                     className={cn(
-                        'text-3xl text-center font-bold',
+                        'text-2xl text-center font-bold lg:text-3xl',
                         differenceExpenseIncome > totalIncome && 'text-red-700',
                         differenceExpenseIncome < totalIncome && 'text-green-700',
                         differenceExpenseIncome === 0 && 'text-yellow-300'
