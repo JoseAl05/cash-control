@@ -39,6 +39,11 @@ const ExpenseActions = ({
     const [isDeleting, setIsDeleting] = useState(false);
     const { isOpen, onClose, type, onOpen } = useModal();
 
+    const formattedValue = new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP'
+    }).format(expense.value);
+
 
     const deleteExpense = async () => {
         const isLoading = toast.loading('Eliminando...');
@@ -67,15 +72,15 @@ const ExpenseActions = ({
         <div className='flex justify-center gap-x-2'>
             <AlertDialog>
                 <AlertDialogTrigger className='bg-red-700 rounded-lg p-2 text-sm text-white'>Eliminar</AlertDialogTrigger>
-                <AlertDialogContent>
+                <AlertDialogContent className='w-auto lg:w-full'>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>¿Está seguro que quiere eliminar el siguiente gasto?: {expense.value}.</AlertDialogTitle>
+                        <AlertDialogTitle className='text-base lg:text-lg'>¿Está seguro que quiere eliminar el siguiente gasto? ---{'>'} {expense.description} / {formattedValue}.</AlertDialogTitle>
                         <AlertDialogDescription>
                             Está acción no se puede deshacer.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel disabled={isDeleting}>Cancelar</AlertDialogCancel>
                         {
                             isDeleting ? (
                                 <Button variant='destructive' disabled={isDeleting}>
