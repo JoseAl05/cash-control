@@ -35,8 +35,6 @@ export default function RootLayout({
             enableSystem={false}
             storageKey='ChatAppTheme'
           >
-            <ModalProvider />
-            <ToasterProvider />
             {children}
           </ThemeProvider>
         </body>
